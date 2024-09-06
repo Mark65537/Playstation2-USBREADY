@@ -1,55 +1,55 @@
 @echo off
 setlocal enabledelayedexpansion
 
-REM Получаем имя текущей папки
+REM ╨Я╨╛╨╗╤Г╤З╨░╨╡╨╝ ╨╕╨╝╤П ╤В╨╡╨║╤Г╤Й╨╡╨╣ ╨┐╨░╨┐╨║╨╕
 for %%F in (.) do set CurFolderName=%%~nxF
 
-REM Путь к файлу конфигурации
+REM ╨Я╤Г╤В╤М ╨║ ╤Д╨░╨╣╨╗╤Г ╨║╨╛╨╜╤Д╨╕╨│╤Г╤А╨░╤Ж╨╕╨╕
 set ConfigFilePath=..\conf_apps.cfg
 
-REM Удаляем файл, если он уже существует (для перезаписи)
+REM ╨г╨┤╨░╨╗╤П╨╡╨╝ ╤Д╨░╨╣╨╗, ╨╡╤Б╨╗╨╕ ╨╛╨╜ ╤Г╨╢╨╡ ╤Б╤Г╤Й╨╡╤Б╤В╨▓╤Г╨╡╤В (╨┤╨╗╤П ╨┐╨╡╤А╨╡╨╖╨░╨┐╨╕╤Б╨╕)
 if exist "%ConfigFilePath%" del "%ConfigFilePath%"
 
-REM Переменная для хранения первой буквы предыдущей папки
+REM ╨Я╨╡╤А╨╡╨╝╨╡╨╜╨╜╨░╤П ╨┤╨╗╤П ╤Е╤А╨░╨╜╨╡╨╜╨╕╤П ╨┐╨╡╤А╨▓╨╛╨╣ ╨▒╤Г╨║╨▓╤Л ╨┐╤А╨╡╨┤╤Л╨┤╤Г╤Й╨╡╨╣ ╨┐╨░╨┐╨║╨╕
 set PrevFirstLetter=
 
-REM Проходим по каждой папке в текущей директории
+REM ╨Я╤А╨╛╤Е╨╛╨┤╨╕╨╝ ╨┐╨╛ ╨║╨░╨╢╨┤╨╛╨╣ ╨┐╨░╨┐╨║╨╡ ╨▓ ╤В╨╡╨║╤Г╤Й╨╡╨╣ ╨┤╨╕╤А╨╡╨║╤В╨╛╤А╨╕╨╕
 for /d %%D in (*) do (
     set "FolderName=%%~nxD"
 
     echo set "FolderName=%%~nxD"
 
-    REM Ищем файл .elf
+    REM ╨Ш╤Й╨╡╨╝ ╤Д╨░╨╣╨╗ .elf
     set "ElfFile="
     for %%F in (%%D\*.elf) do (
         set "ElfFile=%%F"
-        @REM не работает
+        @REM ╨╜╨╡ ╤А╨░╨▒╨╛╤В╨░╨╡╤В
         @REM goto foundElf
     )
 
     :foundElf
     echo set "ElfFile=!ElfFile!"
     if defined ElfFile (
-        REM Получаем относительный путь к файлу .elf
+        REM ╨Я╨╛╨╗╤Г╤З╨░╨╡╨╝ ╨╛╤В╨╜╨╛╤Б╨╕╤В╨╡╨╗╤М╨╜╤Л╨╣ ╨┐╤Г╤В╤М ╨║ ╤Д╨░╨╣╨╗╤Г .elf
         set "RelativePathToElfFile=!ElfFile:%cd%\=!"
 
-        REM Заменяем обратные слэши на прямые для соответствия Unix-пути
+        REM ╨Ч╨░╨╝╨╡╨╜╤П╨╡╨╝ ╨╛╨▒╤А╨░╤В╨╜╤Л╨╡ ╤Б╨╗╤Н╤И╨╕ ╨╜╨░ ╨┐╤А╤П╨╝╤Л╨╡ ╨┤╨╗╤П ╤Б╨╛╨╛╤В╨▓╨╡╤В╤Б╤В╨▓╨╕╤П Unix-╨┐╤Г╤В╨╕
         set "RelativePathToElfFile=!RelativePathToElfFile:\=/!"
 
-        REM Проверяем первую букву папки
+        REM ╨Я╤А╨╛╨▓╨╡╤А╤П╨╡╨╝ ╨┐╨╡╤А╨▓╤Г╤О ╨▒╤Г╨║╨▓╤Г ╨┐╨░╨┐╨║╨╕
         set "CurFirstLetter=!FolderName:~0,1!"
         if not "!CurFirstLetter!"=="!PrevFirstLetter!" (
-            REM Добавляем новую строку в конфигурационный файл
+            REM ╨Ф╨╛╨▒╨░╨▓╨╗╤П╨╡╨╝ ╨╜╨╛╨▓╤Г╤О ╤Б╤В╤А╨╛╨║╤Г ╨▓ ╨║╨╛╨╜╤Д╨╕╨│╤Г╤А╨░╤Ж╨╕╨╛╨╜╨╜╤Л╨╣ ╤Д╨░╨╣╨╗
             echo. >> "%ConfigFilePath%"
         )
 
-        REM Формируем строку для записи в файл
+        REM ╨д╨╛╤А╨╝╨╕╤А╤Г╨╡╨╝ ╤Б╤В╤А╨╛╨║╤Г ╨┤╨╗╤П ╨╖╨░╨┐╨╕╤Б╨╕ ╨▓ ╤Д╨░╨╣╨╗
         echo !FolderName!=mass:/!CurFolderName!/!RelativePathToElfFile! >> "%ConfigFilePath%"
 
-        REM Обновляем первую букву предыдущей папки
+        REM ╨Ю╨▒╨╜╨╛╨▓╨╗╤П╨╡╨╝ ╨┐╨╡╤А╨▓╤Г╤О ╨▒╤Г╨║╨▓╤Г ╨┐╤А╨╡╨┤╤Л╨┤╤Г╤Й╨╡╨╣ ╨┐╨░╨┐╨║╨╕
         set "PrevFirstLetter=!CurFirstLetter!"
     ) else (
-        echo Файл .elf не найден в папке !FolderName!
+        echo ╨д╨░╨╣╨╗ .elf ╨╜╨╡ ╨╜╨░╨╣╨┤╨╡╨╜ ╨▓ ╨┐╨░╨┐╨║╨╡ !FolderName!
     )
 )
 
